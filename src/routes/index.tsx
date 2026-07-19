@@ -1,23 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import SkillCard from "../components/SkillCard";
 
 export const Route = createFileRoute("/")({ component: Home });
 
 function Home() {
 	return (
-		<div className="h-screen md:px-16 px-8 py-8 bg-gray-100">
-			<div>
-				<p>Marketplace of Skills</p>
-				<ul className="mt-4 grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
+		<div className="flex flex-col gap-4">
+			<p>Marketplace des skills</p>
+			<div className="flex flex-col gap-2">
+				<Link to="/skills/new" className="w-fit">
+					<button
+						type="button"
+						className="font-semibold text-sm bg-black text-white px-4 py-2 rounded-md cursor-pointer flex items-center gap-2"
+					>
+						<Plus size={16} strokeWidth={3} />
+						<span>Créer un skill</span>
+					</button>
+				</Link>
+
+				<ul className="grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
 					<li>
 						<SkillCard name="Tanstack Stack" />
 					</li>
 					<li>
-            <SkillCard name="TypeScript" />
-          </li>
-          <li>
-            <SkillCard name="Convex" />
-          </li>
+						<SkillCard name="TypeScript" />
+					</li>
+					<li>
+						<SkillCard name="Convex" />
+					</li>
 				</ul>
 			</div>
 		</div>

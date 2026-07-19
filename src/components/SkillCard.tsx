@@ -32,7 +32,7 @@ const SkillCard = ({ name }: SkillCardProps) => {
 					</button>
 				</div>
 				<h2 className="text-lg font-semibold">{name}</h2>
-				<span className="text-sm text-gray-500">
+				<span className="text-sm text-gray-500 z-10">
 					{likes} {likes > 1 ? "likes" : "like"}
 				</span>
 			</article>

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as FavoriteRouteImport } from './routes/favorite'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as DashboardSkillsRouteImport } from './routes/dashboard/skills'
@@ -25,6 +26,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoriteRoute = FavoriteRouteImport.update({
+  id: '/favorite',
+  path: '/favorite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -56,6 +62,7 @@ const SkillsNewRoute = SkillsNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/favorite': typeof FavoriteRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/favorite': typeof FavoriteRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/favorite': typeof FavoriteRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/favorite'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/favorite'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -102,6 +113,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/favorite'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -112,6 +124,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  FavoriteRoute: typeof FavoriteRoute
   SkillsSkillIdRoute: typeof SkillsSkillIdRoute
   SkillsNewRoute: typeof SkillsNewRoute
 }
@@ -130,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorite': {
+      id: '/favorite'
+      path: '/favorite'
+      fullPath: '/favorite'
+      preLoaderRoute: typeof FavoriteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -189,6 +209,7 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  FavoriteRoute: FavoriteRoute,
   SkillsSkillIdRoute: SkillsSkillIdRoute,
   SkillsNewRoute: SkillsNewRoute,
 }

@@ -2,32 +2,44 @@ import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 
-type SkillCardProps = {
+type PokemonCardProps = {
 	name: string;
 };
 
-const SkillCard = ({ name }: SkillCardProps) => {
+const PokemonCard = ({ name }: PokemonCardProps) => {
 	const [liked, setLiked] = useState(false);
 	const likes = liked ? 1 : 0;
+
+	const handleLikeToggle = () => {
+		const next = !liked;
+		console.log(`setLiked: ${next ? "liked" : "unliked"} ${name}`);
+		setLiked(next);
+	};
 
 	return (
 		<article className="relative p-4 rounded-xl border border-gray-200 bg-white">
 			<div className="flex justify-between items-center">
-				<p className="font-mono font-semibold text-sm text-gray-500">SKILL</p>
+				<p className="font-mono font-semibold text-sm text-gray-500">POKEMON</p>
 				<button
 					type="button"
 					className="relative z-10 flex items-center gap-1 cursor-pointer"
-					onClick={() => setLiked((current) => !current)}
+					onClick={handleLikeToggle}
 				>
-					<div className={`rounded-full p-1.5 ${liked ? "hover:bg-red-100" : "hover:bg-gray-100"}`}>
-						<Heart fill={liked ? "red" : "none"} stroke={liked ? "red" : "gray"} size={16} />
+					<div
+						className={`rounded-full p-1.5 ${liked ? "hover:bg-red-100" : "hover:bg-gray-100"}`}
+					>
+						<Heart
+							fill={liked ? "red" : "none"}
+							stroke={liked ? "red" : "gray"}
+							size={16}
+						/>
 					</div>
 				</button>
 			</div>
 			<h2 className="text-lg font-semibold">
 				<Link
-					to="/skills/$skillId"
-					params={{ skillId: name }}
+					to="/pokemons/$pokemonId"
+					params={{ pokemonId: name }}
 					className="after:absolute after:inset-0"
 				>
 					{name}
@@ -40,4 +52,4 @@ const SkillCard = ({ name }: SkillCardProps) => {
 	);
 };
 
-export default SkillCard;
+export default PokemonCard;

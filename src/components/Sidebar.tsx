@@ -11,7 +11,7 @@ const Sidebar = () => {
           <Link to="/dashboard/settings">Settings</Link>
         </li>
         <li>
-          <Link to="/dashboard/skills">Skills</Link>
+          <Link to="/dashboard/pokemons">Pokemons</Link>
         </li>
       </ul>
     </nav>

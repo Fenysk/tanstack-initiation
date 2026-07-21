@@ -17,6 +17,10 @@ export const Route = createRootRoute({
 			{
 				title: "Initiation à TanStack",
 			},
+			{
+				name: "description",
+				content: "Voici une initiation à TanStack Router",
+			}
 		],
 		links: [
 			{

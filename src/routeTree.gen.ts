@@ -14,10 +14,10 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as FavoriteRouteImport } from './routes/favorite'
 import { Route as HelloRouteImport } from './routes/hello'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardPokemonsRouteImport } from './routes/dashboard/pokemons'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
-import { Route as DashboardSkillsRouteImport } from './routes/dashboard/skills'
-import { Route as SkillsSkillIdRouteImport } from './routes/skills/$skillId'
-import { Route as SkillsNewRouteImport } from './routes/skills/new'
+import { Route as PokemonsPokemonIdRouteImport } from './routes/pokemons/$pokemonId'
+import { Route as PokemonsNewRouteImport } from './routes/pokemons/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -44,24 +44,24 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardPokemonsRoute = DashboardPokemonsRouteImport.update({
+  id: '/pokemons',
+  path: '/pokemons',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardSkillsRoute = DashboardSkillsRouteImport.update({
-  id: '/skills',
-  path: '/skills',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const SkillsSkillIdRoute = SkillsSkillIdRouteImport.update({
-  id: '/skills/$skillId',
-  path: '/skills/$skillId',
+const PokemonsPokemonIdRoute = PokemonsPokemonIdRouteImport.update({
+  id: '/pokemons/$pokemonId',
+  path: '/pokemons/$pokemonId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SkillsNewRoute = SkillsNewRouteImport.update({
-  id: '/skills/new',
-  path: '/skills/new',
+const PokemonsNewRoute = PokemonsNewRouteImport.update({
+  id: '/pokemons/new',
+  path: '/pokemons/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -70,20 +70,20 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
+  '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/skills': typeof DashboardSkillsRoute
-  '/skills/$skillId': typeof SkillsSkillIdRoute
-  '/skills/new': typeof SkillsNewRoute
+  '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
+  '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
+  '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/skills': typeof DashboardSkillsRoute
-  '/skills/$skillId': typeof SkillsSkillIdRoute
-  '/skills/new': typeof SkillsNewRoute
+  '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
+  '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -92,10 +92,10 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
+  '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/skills': typeof DashboardSkillsRoute
-  '/skills/$skillId': typeof SkillsSkillIdRoute
-  '/skills/new': typeof SkillsNewRoute
+  '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
+  '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -105,20 +105,20 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/favorite'
     | '/hello'
+    | '/dashboard/pokemons'
     | '/dashboard/settings'
-    | '/dashboard/skills'
-    | '/skills/$skillId'
-    | '/skills/new'
+    | '/pokemons/$pokemonId'
+    | '/pokemons/new'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/favorite'
     | '/hello'
+    | '/dashboard/pokemons'
     | '/dashboard/settings'
-    | '/dashboard/skills'
-    | '/skills/$skillId'
-    | '/skills/new'
+    | '/pokemons/$pokemonId'
+    | '/pokemons/new'
     | '/dashboard'
   id:
     | '__root__'
@@ -126,10 +126,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/favorite'
     | '/hello'
+    | '/dashboard/pokemons'
     | '/dashboard/settings'
-    | '/dashboard/skills'
-    | '/skills/$skillId'
-    | '/skills/new'
+    | '/pokemons/$pokemonId'
+    | '/pokemons/new'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -138,8 +138,8 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   FavoriteRoute: typeof FavoriteRoute
   HelloRoute: typeof HelloRoute
-  SkillsSkillIdRoute: typeof SkillsSkillIdRoute
-  SkillsNewRoute: typeof SkillsNewRoute
+  PokemonsPokemonIdRoute: typeof PokemonsPokemonIdRoute
+  PokemonsNewRoute: typeof PokemonsNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -179,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/pokemons': {
+      id: '/dashboard/pokemons'
+      path: '/pokemons'
+      fullPath: '/dashboard/pokemons'
+      preLoaderRoute: typeof DashboardPokemonsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/settings': {
       id: '/dashboard/settings'
       path: '/settings'
@@ -186,39 +193,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/skills': {
-      id: '/dashboard/skills'
-      path: '/skills'
-      fullPath: '/dashboard/skills'
-      preLoaderRoute: typeof DashboardSkillsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/skills/$skillId': {
-      id: '/skills/$skillId'
-      path: '/skills/$skillId'
-      fullPath: '/skills/$skillId'
-      preLoaderRoute: typeof SkillsSkillIdRouteImport
+    '/pokemons/$pokemonId': {
+      id: '/pokemons/$pokemonId'
+      path: '/pokemons/$pokemonId'
+      fullPath: '/pokemons/$pokemonId'
+      preLoaderRoute: typeof PokemonsPokemonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/skills/new': {
-      id: '/skills/new'
-      path: '/skills/new'
-      fullPath: '/skills/new'
-      preLoaderRoute: typeof SkillsNewRouteImport
+    '/pokemons/new': {
+      id: '/pokemons/new'
+      path: '/pokemons/new'
+      fullPath: '/pokemons/new'
+      preLoaderRoute: typeof PokemonsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 interface DashboardRouteRouteChildren {
+  DashboardPokemonsRoute: typeof DashboardPokemonsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DashboardSkillsRoute: typeof DashboardSkillsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardPokemonsRoute: DashboardPokemonsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
-  DashboardSkillsRoute: DashboardSkillsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
@@ -231,8 +231,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   FavoriteRoute: FavoriteRoute,
   HelloRoute: HelloRoute,
-  SkillsSkillIdRoute: SkillsSkillIdRoute,
-  SkillsNewRoute: SkillsNewRoute,
+  PokemonsPokemonIdRoute: PokemonsPokemonIdRoute,
+  PokemonsNewRoute: PokemonsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

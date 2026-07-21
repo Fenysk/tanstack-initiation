@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as FavoriteRouteImport } from './routes/favorite'
-import { Route as ApiHelloRouteImport } from './routes/api/hello'
+import { Route as HelloRouteImport } from './routes/hello'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as DashboardSkillsRouteImport } from './routes/dashboard/skills'
@@ -34,9 +34,9 @@ const FavoriteRoute = FavoriteRouteImport.update({
   path: '/favorite',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHelloRoute = ApiHelloRouteImport.update({
-  id: '/api/hello',
-  path: '/api/hello',
+const HelloRoute = HelloRouteImport.update({
+  id: '/hello',
+  path: '/hello',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -69,7 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/favorite': typeof FavoriteRoute
-  '/api/hello': typeof ApiHelloRoute
+  '/hello': typeof HelloRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -79,7 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/favorite': typeof FavoriteRoute
-  '/api/hello': typeof ApiHelloRoute
+  '/hello': typeof HelloRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -91,7 +91,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/favorite': typeof FavoriteRoute
-  '/api/hello': typeof ApiHelloRoute
+  '/hello': typeof HelloRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/skills': typeof DashboardSkillsRoute
   '/skills/$skillId': typeof SkillsSkillIdRoute
@@ -104,7 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/favorite'
-    | '/api/hello'
+    | '/hello'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -114,7 +114,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/favorite'
-    | '/api/hello'
+    | '/hello'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -125,7 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/favorite'
-    | '/api/hello'
+    | '/hello'
     | '/dashboard/settings'
     | '/dashboard/skills'
     | '/skills/$skillId'
@@ -137,7 +137,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   FavoriteRoute: typeof FavoriteRoute
-  ApiHelloRoute: typeof ApiHelloRoute
+  HelloRoute: typeof HelloRoute
   SkillsSkillIdRoute: typeof SkillsSkillIdRoute
   SkillsNewRoute: typeof SkillsNewRoute
 }
@@ -165,11 +165,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FavoriteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/hello': {
-      id: '/api/hello'
-      path: '/api/hello'
-      fullPath: '/api/hello'
-      preLoaderRoute: typeof ApiHelloRouteImport
+    '/hello': {
+      id: '/hello'
+      path: '/hello'
+      fullPath: '/hello'
+      preLoaderRoute: typeof HelloRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -230,7 +230,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   FavoriteRoute: FavoriteRoute,
-  ApiHelloRoute: ApiHelloRoute,
+  HelloRoute: HelloRoute,
   SkillsSkillIdRoute: SkillsSkillIdRoute,
   SkillsNewRoute: SkillsNewRoute,
 }

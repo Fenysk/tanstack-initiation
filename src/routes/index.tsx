@@ -2,7 +2,7 @@ import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import PokemonCard from "@/components/PokemonCard";
 import RetryPanel from "@/components/RetryPanel";
-import { getPokemonsFn } from "@/server/pokemon";
+import { getPokemonsFn } from "@/server/pokemon/pokemon.functions";
 
 export const Route = createFileRoute("/")({
 	component: App,

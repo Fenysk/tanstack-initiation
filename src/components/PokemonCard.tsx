@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { useState } from "react";
-import type { Pokemon } from "@/server/pokemon";
+import type { Pokemon } from "@/domain/pokemon/types";
 
 const PokemonCard = ({ name, image }: Pokemon) => {
 	const [liked, setLiked] = useState(false);

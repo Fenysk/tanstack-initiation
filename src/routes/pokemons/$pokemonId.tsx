@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import RetryPanel from "@/components/RetryPanel";
-import { getPokemonFn } from "@/server/pokemon";
+import { getPokemonFn } from "@/server/pokemon/pokemon.functions";
 
 export const Route = createFileRoute("/pokemons/$pokemonId")({
 	loader: ({ params }) => getPokemonFn({ data: params.pokemonId }),

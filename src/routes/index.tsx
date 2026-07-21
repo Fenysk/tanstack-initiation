@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import PokemonCard from "@/components/PokemonCard";
-import { getPokemonFn } from "@/server/pokemon";
+import { getPokemonsFn } from "@/server/pokemon";
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 		<div className="p-14 text-center">Chargement des pokemons...</div>
 	),
 	pendingMs: 300,
-	loader: () => getPokemonFn(),
+	loader: () => getPokemonsFn(),
 	errorComponent: ({ error }) => {
 		const router = useRouter();
 
@@ -76,7 +76,7 @@ function App() {
 			</nav>
 
 			<ul className="grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 mt-6">
-				{data.results.map((pokemon: { name: string }) => (
+				{data.results.map((pokemon) => (
 					<li key={pokemon.name}>
 						<PokemonCard name={pokemon.name} />
 					</li>

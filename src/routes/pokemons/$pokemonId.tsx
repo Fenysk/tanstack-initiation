@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { getPokemonFn, type Pokemon } from "@/server/pokemon";
 
 export const Route = createFileRoute("/pokemons/$pokemonId")({
 	component: PokemonDetailPage,
@@ -58,14 +59,59 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 			],
 		};
 	},
+	loader: ({ params }: { params: { pokemonId: string } }): Promise<Pokemon> =>
+		getPokemonFn({ data: params.pokemonId }),
+	pendingComponent: () => {
+		return (
+			<div className="p-14">
+				<p>Chargement du pokémon...</p>
+			</div>
+		);
+	},
+	errorComponent: ({ error }) => {
+		const router = useRouter();
+
+		return (
+			<div className="p-14">
+				<p>Oups, une erreur est survenue lors du chargement du pokémon :</p>
+				<p className="text-red-500">{error.message}</p>
+				<button
+					type="button"
+					onClick={() => router.invalidate()}
+					className="cursor-pointer bg-black text-white px-4 py-2 rounded-md"
+				>
+					Réessayer
+				</button>
+			</div>
+		);
+	},
+	notFoundComponent: () => {
+		const router = useRouter();
+
+		return (
+			<div className="p-14">
+				<p>Pokémon non trouvé</p>
+				<button
+					type="button"
+					onClick={() => router.invalidate()}
+					className="cursor-pointer bg-black text-white px-4 py-2 rounded-md"
+				>
+					Réessayer
+				</button>
+			</div>
+		);
+	},
 });
 
 function PokemonDetailPage() {
-	const { pokemonId } = Route.useParams();
+	const pokemon = Route.useLoaderData();
 
 	return (
 		<div>
-			<p>Détail du pokémon : {pokemonId}</p>
+			<h1 className="text-2xl font-semibold capitalize">{pokemon.name}</h1>
+			{pokemon.image && (
+				<img src={pokemon.image} alt={pokemon.name} width={96} height={96} />
+			)}
 		</div>
 	);
 }

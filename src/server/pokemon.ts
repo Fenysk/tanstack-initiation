@@ -3,8 +3,17 @@ import { createServerFn } from "@tanstack/react-start";
 
 const POKEMON_API_URL = "https://pokeapi.co/api/v2/pokemon?limit=9";
 
-export const getPokemonFn = createServerFn({ method: "GET" }).handler(
-	async () => {
+export type Pokemon = {
+	name: string;
+	image: string | null;
+};
+
+export type PokemonList = {
+	results: Array<{ name: string }>;
+};
+
+export const getPokemonsFn = createServerFn({ method: "GET" }).handler(
+	async (): Promise<PokemonList> => {
 		console.log("Executing a secure database/API call on the server...");
 
 		const response = await fetch(POKEMON_API_URL);
@@ -14,9 +23,34 @@ export const getPokemonFn = createServerFn({ method: "GET" }).handler(
 
 		if (!data.results || !data.results.length) throw notFound();
 
-		return data;
+		return {
+			results: data.results.map((pokemon: { name: string }) => ({
+				name: pokemon.name,
+			})),
+		};
 	},
 );
+
+export const getPokemonFn = createServerFn({ method: "GET" })
+	.validator((pokemonId: string) => pokemonId)
+	.handler(async ({ data: pokemonId }): Promise<Pokemon> => {
+		const baseUrl = POKEMON_API_URL.split("?")[0];
+		const url = `${baseUrl}/${pokemonId}`;
+		const response = await fetch(url);
+
+		if (response.status === 404) throw notFound();
+		if (!response.ok)
+			throw new Error(`Failed to fetch pokemon (${response.status})`);
+
+		const data = await response.json();
+
+		if (!data?.name) throw notFound();
+
+		return {
+			name: data.name,
+			image: data.sprites?.front_default ?? null,
+		};
+	});
 
 export const savePokemonFn = createServerFn({ method: "POST" })
 	.validator((name: string) => name)

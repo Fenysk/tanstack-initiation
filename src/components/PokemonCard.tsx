@@ -1,12 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import type { Pokemon } from "@/server/pokemon";
 
-type PokemonCardProps = {
-	name: string;
-};
-
-const PokemonCard = ({ name }: PokemonCardProps) => {
+const PokemonCard = ({ name, image }: Pokemon) => {
 	const [liked, setLiked] = useState(false);
 	const likes = liked ? 1 : 0;
 
@@ -36,6 +33,9 @@ const PokemonCard = ({ name }: PokemonCardProps) => {
 					</div>
 				</button>
 			</div>
+			{image && (
+				<img src={image} alt={name} width={96} height={96} className="my-2" />
+			)}
 			<h2 className="text-lg font-semibold">
 				<Link
 					to="/pokemons/$pokemonId"

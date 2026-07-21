@@ -1,66 +1,73 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { getPokemonFn, type Pokemon } from "@/server/pokemon";
+import RetryPanel from "@/components/RetryPanel";
+import { getPokemonFn } from "@/server/pokemon";
 
 export const Route = createFileRoute("/pokemons/$pokemonId")({
-	component: PokemonDetailPage,
-	head: ({ params }) => {
-		const title = `Pokemon - ${params.pokemonId}`;
-		const description = `Détails du pokémon ${params.pokemonId}`;
+	loader: ({ params }) => getPokemonFn({ data: params.pokemonId }),
+	head: ({ params, loaderData }) => {
+		const name = loaderData?.name ?? params.pokemonId;
+		const title = `Pokemon - ${name}`;
+		const description = `Détails du pokémon ${name}`;
 		const url = `http://localhost:3000/pokemons/${params.pokemonId}`;
+		const image = loaderData?.image;
 
-		return {
-			meta: [
+		const meta = [
+			{
+				title,
+			},
+			{
+				name: "description",
+				content: description,
+			},
+			{
+				property: "og:title",
+				content: title,
+			},
+			{
+				property: "og:description",
+				content: description,
+			},
+			{
+				property: "og:url",
+				content: url,
+			},
+			{
+				property: "og:type",
+				content: "website",
+			},
+			{
+				name: "twitter:card",
+				content: image ? "summary_large_image" : "summary",
+			},
+			{
+				name: "twitter:title",
+				content: title,
+			},
+			{
+				name: "twitter:description",
+				content: description,
+			},
+			{
+				name: "twitter:url",
+				content: url,
+			},
+		];
+
+		if (image) {
+			meta.push(
 				{
-					charSet: "utf-8",
+					property: "og:image",
+					content: image,
 				},
 				{
-					name: "viewport",
-					content: "width=device-width, initial-scale=1",
+					name: "twitter:image",
+					content: image,
 				},
-				{
-					title,
-				},
-				{
-					name: "description",
-					content: description,
-				},
-				{
-					property: "og:title",
-					content: title,
-				},
-				{
-					property: "og:description",
-					content: description,
-				},
-				{
-					property: "og:url",
-					content: url,
-				},
-				{
-					property: "og:type",
-					content: "website",
-				},
-				{
-					name: "twitter:card",
-					content: "summary",
-				},
-				{
-					name: "twitter:title",
-					content: title,
-				},
-				{
-					name: "twitter:description",
-					content: description,
-				},
-				{
-					name: "twitter:url",
-					content: url,
-				},
-			],
-		};
+			);
+		}
+
+		return { meta };
 	},
-	loader: ({ params }: { params: { pokemonId: string } }): Promise<Pokemon> =>
-		getPokemonFn({ data: params.pokemonId }),
 	pendingComponent: () => {
 		return (
 			<div className="p-14">
@@ -72,35 +79,24 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 		const router = useRouter();
 
 		return (
-			<div className="p-14">
-				<p>Oups, une erreur est survenue lors du chargement du pokémon :</p>
-				<p className="text-red-500">{error.message}</p>
-				<button
-					type="button"
-					onClick={() => router.invalidate()}
-					className="cursor-pointer bg-black text-white px-4 py-2 rounded-md"
-				>
-					Réessayer
-				</button>
-			</div>
+			<RetryPanel
+				message="Oups, une erreur est survenue lors du chargement du pokémon :"
+				errorMessage={error.message}
+				onRetry={() => router.invalidate()}
+			/>
 		);
 	},
 	notFoundComponent: () => {
 		const router = useRouter();
 
 		return (
-			<div className="p-14">
-				<p>Pokémon non trouvé</p>
-				<button
-					type="button"
-					onClick={() => router.invalidate()}
-					className="cursor-pointer bg-black text-white px-4 py-2 rounded-md"
-				>
-					Réessayer
-				</button>
-			</div>
+			<RetryPanel
+				message="Pokémon non trouvé"
+				onRetry={() => router.invalidate()}
+			/>
 		);
 	},
+	component: PokemonDetailPage,
 });
 
 function PokemonDetailPage() {

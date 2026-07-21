@@ -1,7 +1,7 @@
 import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
-const POKEMON_API_URL = "https://pokeapi.co/api/v2/pokemon?limit=9";
+const POKEAPI_BASE = "https://pokeapi.co/api/v2/pokemon";
 
 export type Pokemon = {
 	name: string;
@@ -9,14 +9,23 @@ export type Pokemon = {
 };
 
 export type PokemonList = {
-	results: Array<{ name: string }>;
+	results: Pokemon[];
+};
+
+const getSpriteUrlFromPokemonUrl = (url: string): string | null => {
+	const id = url.split("/").filter(Boolean).pop();
+	if (!id || Number.isNaN(Number(id))) return null;
+	return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 };
 
 export const getPokemonsFn = createServerFn({ method: "GET" }).handler(
 	async (): Promise<PokemonList> => {
 		console.log("Executing a secure database/API call on the server...");
 
-		const response = await fetch(POKEMON_API_URL);
+		const response = await fetch(`${POKEAPI_BASE}?limit=9`);
+		if (!response.ok)
+			throw new Error(`Failed to fetch pokemons (${response.status})`);
+
 		const data = await response.json();
 
 		console.log("Data successfully fetched on the server !");
@@ -24,9 +33,12 @@ export const getPokemonsFn = createServerFn({ method: "GET" }).handler(
 		if (!data.results || !data.results.length) throw notFound();
 
 		return {
-			results: data.results.map((pokemon: { name: string }) => ({
-				name: pokemon.name,
-			})),
+			results: data.results.map(
+				(pokemon: { name: string; url: string }) => ({
+					name: pokemon.name,
+					image: getSpriteUrlFromPokemonUrl(pokemon.url),
+				}),
+			),
 		};
 	},
 );
@@ -34,9 +46,7 @@ export const getPokemonsFn = createServerFn({ method: "GET" }).handler(
 export const getPokemonFn = createServerFn({ method: "GET" })
 	.validator((pokemonId: string) => pokemonId)
 	.handler(async ({ data: pokemonId }): Promise<Pokemon> => {
-		const baseUrl = POKEMON_API_URL.split("?")[0];
-		const url = `${baseUrl}/${pokemonId}`;
-		const response = await fetch(url);
+		const response = await fetch(`${POKEAPI_BASE}/${pokemonId}`);
 
 		if (response.status === 404) throw notFound();
 		if (!response.ok)

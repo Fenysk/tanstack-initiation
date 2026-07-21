@@ -51,11 +51,11 @@ export const Route = createFileRoute("/")({
 function App() {
 	const data = Route.useLoaderData();
 
-	console.info("Test de log côté client !");
+	console.info("Test de log côté client ! Voici la data fetchée :", data);
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="flex flex-row gap-4">
+			<nav className="flex flex-row gap-4">
 				<Link to="/favorite" className="w-fit">
 					<button
 						type="button"
@@ -73,7 +73,7 @@ function App() {
 						<span>Créer un skill</span>
 					</button>
 				</Link>
-			</div>
+			</nav>
 
 			<ul className="mt-6 list-none p-0 space-y-5">
 				{data.results.map((pokemon: { name: string }) => (

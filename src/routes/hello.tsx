@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/hello")({
 	server: {
@@ -19,8 +20,7 @@ function HelloComponent() {
 
 	return (
 		<main>
-			<button
-				className="cursor-pointer bg-black text-white px-4 py-2 rounded-md"
+			<Button
 				type="button"
 				onClick={() => {
 					fetch("/hello", {
@@ -33,7 +33,7 @@ function HelloComponent() {
 				}}
 			>
 				Say Hello {reply && `- ${reply}`}
-			</button>
+			</Button>
 		</main>
 	);
 }

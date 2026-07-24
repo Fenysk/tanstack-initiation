@@ -1,6 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import type { Pokemon } from "@/domain/pokemon/types";
 
 const PokemonCard = ({ name, image }: Pokemon) => {
@@ -14,41 +24,44 @@ const PokemonCard = ({ name, image }: Pokemon) => {
 	};
 
 	return (
-		<article className="relative p-4 rounded-xl border border-gray-200 bg-white">
-			<div className="flex justify-between items-center">
-				<p className="font-mono font-semibold text-sm text-gray-500">POKEMON</p>
-				<button
-					type="button"
-					className="relative z-10 flex items-center gap-1 cursor-pointer"
-					onClick={handleLikeToggle}
-				>
-					<div
-						className={`rounded-full p-1.5 ${liked ? "hover:bg-red-100" : "hover:bg-gray-100"}`}
+		<Card className="relative">
+			<CardHeader>
+				<CardDescription className="font-mono font-semibold tracking-wide uppercase">
+					Pokemon
+				</CardDescription>
+				<CardAction>
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon-sm"
+						className="relative z-10"
+						onClick={handleLikeToggle}
+						aria-label={liked ? `Unlike ${name}` : `Like ${name}`}
 					>
 						<Heart
-							fill={liked ? "red" : "none"}
-							stroke={liked ? "red" : "gray"}
-							size={16}
+							className={liked ? "fill-destructive text-destructive" : ""}
 						/>
-					</div>
-				</button>
-			</div>
-			{image && (
-				<img src={image} alt={name} width={96} height={96} className="my-2" />
-			)}
-			<h2 className="text-lg font-semibold">
-				<Link
-					to="/pokemons/$pokemonId"
-					params={{ pokemonId: name }}
-					className="after:absolute after:inset-0"
-				>
-					{name}
-				</Link>
-			</h2>
-			<span className="text-sm text-gray-500">
-				{likes} {likes > 1 ? "likes" : "like"}
-			</span>
-		</article>
+					</Button>
+				</CardAction>
+			</CardHeader>
+			<CardContent>
+				{image && (
+					<img src={image} alt={name} width={96} height={96} className="my-2" />
+				)}
+				<CardTitle as="h2" className="text-lg capitalize">
+					<Link
+						to="/pokemons/$pokemonId"
+						params={{ pokemonId: name }}
+						className="after:absolute after:inset-0"
+					>
+						{name}
+					</Link>
+				</CardTitle>
+				<Badge variant="secondary" className="mt-2">
+					{likes} {likes > 1 ? "likes" : "like"}
+				</Badge>
+			</CardContent>
+		</Card>
 	);
 };
 

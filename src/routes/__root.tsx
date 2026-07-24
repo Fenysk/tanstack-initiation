@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import Header from "@/components/Header.tsx";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -20,7 +21,7 @@ export const Route = createRootRoute({
 			{
 				name: "description",
 				content: "Voici une initiation à TanStack Router",
-			}
+			},
 		],
 		links: [
 			{
@@ -34,15 +35,17 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="fr">
+		<html lang="fr" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
 			<body>
-				<div className="grid min-h-dvh grid-rows-[auto_1fr]">
-					<Header />
-					<div className="md:px-16 px-8 py-8 bg-gray-100">{children}</div>
-				</div>
+				<ThemeProvider defaultTheme="light">
+					<div className="grid min-h-dvh grid-rows-[auto_1fr]">
+						<Header />
+						<div className="bg-muted/40 px-8 py-8 md:px-16">{children}</div>
+					</div>
+				</ThemeProvider>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

@@ -5,9 +5,5 @@ export const Route = createFileRoute("/pokemons/new")({
 });
 
 function PokemonNewPage() {
-	return (
-		<div>
-			<p>Créer un pokémon</p>
-		</div>
-	);
+	return <h1 className="text-2xl font-semibold">Créer un pokémon</h1>;
 }

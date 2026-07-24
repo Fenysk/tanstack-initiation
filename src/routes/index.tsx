@@ -2,12 +2,26 @@ import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import PokemonCard from "@/components/PokemonCard";
 import RetryPanel from "@/components/RetryPanel";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPokemonsFn } from "@/server/pokemon/pokemon.functions";
+
+const POKEMON_GRID =
+	"mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+
+const SKELETON_KEYS = Array.from({ length: 8 }, (_, i) => `skeleton-${i}`);
 
 export const Route = createFileRoute("/")({
 	component: App,
 	pendingComponent: () => (
-		<div className="p-14 text-center">Chargement des pokemons...</div>
+		<div className="flex flex-col gap-4 p-14">
+			<Skeleton className="h-8 w-48" />
+			<div className={POKEMON_GRID}>
+				{SKELETON_KEYS.map((key) => (
+					<Skeleton key={key} className="h-48 w-full rounded-xl" />
+				))}
+			</div>
+		</div>
 	),
 	pendingMs: 300,
 	loader: () => getPokemonsFn(),
@@ -40,26 +54,18 @@ function App() {
 	return (
 		<div className="flex flex-col gap-4">
 			<nav className="flex flex-row gap-4">
-				<Link to="/favorite" className="w-fit">
-					<button
-						type="button"
-						className="font-semibold text-sm bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer flex items-center gap-2"
-					>
-						<span>Voir mes favoris</span>
-					</button>
-				</Link>
-				<Link to="/pokemons/new" className="w-fit">
-					<button
-						type="button"
-						className="font-semibold text-sm bg-black text-white px-4 py-2 rounded-md cursor-pointer flex items-center gap-2"
-					>
-						<Plus size={16} strokeWidth={3} />
-						<span>Créer un pokémon</span>
-					</button>
-				</Link>
+				<Button asChild variant="secondary">
+					<Link to="/favorite">Voir mes favoris</Link>
+				</Button>
+				<Button asChild>
+					<Link to="/pokemons/new">
+						<Plus data-icon="inline-start" />
+						Créer un pokémon
+					</Link>
+				</Button>
 			</nav>
 
-			<ul className="grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 mt-6">
+			<ul className={POKEMON_GRID}>
 				{data.results.map((pokemon) => (
 					<li key={pokemon.name}>
 						<PokemonCard {...pokemon} />

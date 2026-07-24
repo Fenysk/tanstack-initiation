@@ -6,7 +6,8 @@ import {
 import type { Pokemon, PokemonList } from "@/domain/pokemon/types";
 
 const POKEAPI_BASE = "https://pokeapi.co/api/v2/pokemon";
-const SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
+const SPRITE_BASE =
+	"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
 
 const getSpriteUrlFromPokemonUrl = (url: string): string | null => {
 	const id = url.split("/").filter(Boolean).pop();

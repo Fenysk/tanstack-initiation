@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import Sidebar from "@/components/Sidebar";
+import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/dashboard")({
 	component: RouteComponent,
@@ -7,11 +8,12 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
 	return (
-		<main className="flex h-full">
-			<aside className="w-1/4 border-r border-gray-200">
+		<main className="flex h-full min-h-0 rounded-xl border bg-background">
+			<aside className="w-64 shrink-0 bg-sidebar text-sidebar-foreground">
 				<Sidebar />
 			</aside>
-			<section className="w-3/4 p-4">
+			<Separator orientation="vertical" />
+			<section className="min-h-0 flex-1 overflow-auto p-4">
 				<Outlet />
 			</section>
 		</main>

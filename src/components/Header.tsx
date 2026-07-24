@@ -1,24 +1,22 @@
 import { Link } from "@tanstack/react-router";
+import { ModeToggle } from "@/components/ModeToggle";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
 	return (
-		<header className="sticky top-0 z-50 py-4 px-8 bg-white shadow">
-			<div className="flex justify-between items-center">
+		<header className="sticky top-0 z-50 border-b bg-background/95 px-8 py-4 backdrop-blur supports-backdrop-filter:bg-background/80">
+			<div className="flex items-center justify-between">
 				<Link to="/">
-					<h1 className="text-2xl font-bold cursor-pointer">
+					<h1 className="cursor-pointer text-2xl font-bold">
 						Initiation à TanStack
 					</h1>
 				</Link>
 				<div className="flex items-center gap-4">
-					<p>Ceci est un header</p>
-					<Link to="/dashboard">
-						<button
-							type="button"
-							className="font-semibold text-sm bg-black text-white px-4 py-2 rounded-md cursor-pointer"
-						>
-							Dashboard
-						</button>
-					</Link>
+					<p className="text-sm text-muted-foreground">Ceci est un header</p>
+					<ModeToggle />
+					<Button asChild>
+						<Link to="/dashboard">Dashboard</Link>
+					</Button>
 				</div>
 			</div>
 		</header>

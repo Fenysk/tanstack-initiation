@@ -1,5 +1,13 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import RetryPanel from "@/components/RetryPanel";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPokemonFn } from "@/server/pokemon/pokemon.functions";
 
 export const Route = createFileRoute("/pokemons/$pokemonId")({
@@ -70,8 +78,9 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 	},
 	pendingComponent: () => {
 		return (
-			<div className="p-14">
-				<p>Chargement du pokémon...</p>
+			<div className="max-w-sm space-y-4 p-14">
+				<Skeleton className="h-8 w-40" />
+				<Skeleton className="size-24 rounded-xl" />
 			</div>
 		);
 	},
@@ -103,11 +112,18 @@ function PokemonDetailPage() {
 	const pokemon = Route.useLoaderData();
 
 	return (
-		<div>
-			<h1 className="text-2xl font-semibold capitalize">{pokemon.name}</h1>
+		<Card className="max-w-sm">
+			<CardHeader>
+				<CardDescription>Pokemon</CardDescription>
+				<CardTitle as="h1" className="text-2xl capitalize">
+					{pokemon.name}
+				</CardTitle>
+			</CardHeader>
 			{pokemon.image && (
-				<img src={pokemon.image} alt={pokemon.name} width={96} height={96} />
+				<CardContent>
+					<img src={pokemon.image} alt={pokemon.name} width={96} height={96} />
+				</CardContent>
 			)}
-		</div>
+		</Card>
 	);
 }

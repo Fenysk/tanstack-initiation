@@ -1,4 +1,9 @@
+import {
+	useQueryErrorResetBoundary,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useEffect } from "react";
 import RetryPanel from "@/components/RetryPanel";
 import {
 	Card,
@@ -8,16 +13,17 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getPokemonFn } from "@/server/pokemon/pokemon.functions";
+import { pokemonQueryOptions } from "@/queries/pokemon.queries";
 
 export const Route = createFileRoute("/pokemons/$pokemonId")({
-	loader: ({ params }) => getPokemonFn({ data: params.pokemonId }),
+	loader: ({ context, params }) =>
+		context.queryClient.ensureQueryData(pokemonQueryOptions(params.pokemonId)),
 	head: ({ params, loaderData }) => {
 		const name = loaderData?.name ?? params.pokemonId;
 		const title = `Pokemon - ${name}`;
 		const description = `Détails du pokémon ${name}`;
 		const url = `http://localhost:3000/pokemons/${params.pokemonId}`;
-		const image = loaderData?.image;
+		const imageUrl = loaderData?.imageUrl;
 
 		const meta = [
 			{
@@ -45,7 +51,7 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 			},
 			{
 				name: "twitter:card",
-				content: image ? "summary_large_image" : "summary",
+				content: imageUrl ? "summary_large_image" : "summary",
 			},
 			{
 				name: "twitter:title",
@@ -61,15 +67,15 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 			},
 		];
 
-		if (image) {
+		if (imageUrl) {
 			meta.push(
 				{
 					property: "og:image",
-					content: image,
+					content: imageUrl,
 				},
 				{
 					name: "twitter:image",
-					content: image,
+					content: imageUrl,
 				},
 			);
 		}
@@ -86,6 +92,11 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 	},
 	errorComponent: ({ error }) => {
 		const router = useRouter();
+		const queryErrorResetBoundary = useQueryErrorResetBoundary();
+
+		useEffect(() => {
+			queryErrorResetBoundary.reset();
+		}, [queryErrorResetBoundary]);
 
 		return (
 			<RetryPanel
@@ -109,7 +120,8 @@ export const Route = createFileRoute("/pokemons/$pokemonId")({
 });
 
 function PokemonDetailPage() {
-	const pokemon = Route.useLoaderData();
+	const { pokemonId } = Route.useParams();
+	const { data: pokemon } = useSuspenseQuery(pokemonQueryOptions(pokemonId));
 
 	return (
 		<Card className="max-w-sm">
@@ -119,9 +131,9 @@ function PokemonDetailPage() {
 					{pokemon.name}
 				</CardTitle>
 			</CardHeader>
-			{pokemon.image && (
+			{pokemon.imageUrl && (
 				<CardContent>
-					<img src={pokemon.image} alt={pokemon.name} width={96} height={96} />
+					<img src={pokemon.imageUrl} alt={pokemon.name} width={96} height={96} />
 				</CardContent>
 			)}
 		</Card>

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const PokemonSchema = z.object({
 	name: z.string().min(1),
-	image: z.url().nullable(),
+	imageUrl: z.url().nullable(),
 });
 
 export const PokemonListSchema = z.object({

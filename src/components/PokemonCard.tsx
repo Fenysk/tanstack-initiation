@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import type { Pokemon } from "@/domain/pokemon/types";
 
-const PokemonCard = ({ name, image }: Pokemon) => {
+const PokemonCard = ({ name, imageUrl }: Pokemon) => {
 	const [liked, setLiked] = useState(false);
 	const likes = liked ? 1 : 0;
 
@@ -45,8 +45,8 @@ const PokemonCard = ({ name, image }: Pokemon) => {
 				</CardAction>
 			</CardHeader>
 			<CardContent>
-				{image && (
-					<img src={image} alt={name} width={96} height={96} className="my-2" />
+				{imageUrl && (
+					<img src={imageUrl} alt={name} width={96} height={96} className="my-2" />
 				)}
 				<CardTitle as="h2" className="text-lg capitalize">
 					<Link

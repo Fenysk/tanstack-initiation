@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
@@ -5,20 +6,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { pokemonsQueryOptions } from "@/queries/pokemon.queries";
 import { savePokemonFn } from "@/server/pokemon/pokemon.functions";
 
 export const Route = createFileRoute("/favorite")({
 	component: FavoritePage,
 });
-
-const FormStatus = {
-	idle: "idle",
-	saving: "saving",
-	success: "success",
-	error: "error",
-} as const;
-
-type FormStatus = (typeof FormStatus)[keyof typeof FormStatus];
 
 type StatusAlert = {
 	title: string;
@@ -28,37 +21,36 @@ type StatusAlert = {
 
 function FavoritePage() {
 	const [name, setName] = useState<string>("");
-	const [status, setStatus] = useState<FormStatus>(FormStatus.idle);
-	const [savedName, setSavedName] = useState<string>("");
-
+	const queryClient = useQueryClient();
 	const savePokemon = useServerFn(savePokemonFn);
 
-	const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		if (!name.trim()) return;
-
-		const nextName = name.trim();
-		setStatus(FormStatus.saving);
-		try {
-			await savePokemon({ data: nextName });
-			setSavedName(nextName);
-			setStatus(FormStatus.success);
+	const savePokemonMutation = useMutation({
+		mutationFn: (nextName: string) => savePokemon({ data: nextName }),
+		onSuccess: () => {
 			setName("");
-		} catch {
-			setStatus(FormStatus.error);
-		}
+			return queryClient.invalidateQueries({
+				queryKey: pokemonsQueryOptions().queryKey,
+			});
+		},
+	});
+
+	const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const trimmedName = name.trim();
+		if (!trimmedName) return;
+		savePokemonMutation.mutate(trimmedName);
 	};
 
 	const getStatusAlert = (): StatusAlert | null => {
-		switch (status) {
-			case FormStatus.saving:
+		switch (savePokemonMutation.status) {
+			case "pending":
 				return { title: "Saving..." };
-			case FormStatus.success:
+			case "success":
 				return {
 					title: "Success",
-					description: `Successfully saved ${savedName}`,
+					description: `Successfully saved ${savePokemonMutation.data.savedName}`,
 				};
-			case FormStatus.error:
+			case "error":
 				return {
 					title: "Error",
 					description: "Failed to save. Try again.",
@@ -84,13 +76,10 @@ function FavoritePage() {
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 							placeholder="Pikachu"
-							disabled={status === FormStatus.saving}
+							disabled={savePokemonMutation.isPending}
 							aria-label="Pokemon name"
 						/>
-						<Button
-							type="submit"
-							disabled={status === FormStatus.saving || !name.trim()}
-						>
+						<Button type="submit" disabled={savePokemonMutation.isPending || !name.trim()}>
 							Save
 						</Button>
 					</div>

@@ -36,7 +36,7 @@ export const fetchPokemons = async (): Promise<PokemonList> => {
 	return {
 		results: parsed.data.results.map((pokemon) => ({
 			name: pokemon.name,
-			image: getSpriteUrlFromPokemonUrl(pokemon.url),
+			imageUrl: getSpriteUrlFromPokemonUrl(pokemon.url),
 		})),
 	};
 };
@@ -55,7 +55,7 @@ export const fetchPokemon = async (pokemonId: string): Promise<Pokemon> => {
 
 	return {
 		name: parsed.data.name,
-		image: parsed.data.sprites.front_default ?? null,
+		imageUrl: parsed.data.sprites.front_default ?? null,
 	};
 };
 
@@ -64,5 +64,5 @@ export const savePokemon = async (name: string) => {
 
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
-	return { success: true, saved: name };
+	return { success: true, savedName: name };
 };

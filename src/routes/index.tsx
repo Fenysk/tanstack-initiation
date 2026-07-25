@@ -1,10 +1,15 @@
+import {
+	useQueryErrorResetBoundary,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
+import { useEffect } from "react";
 import PokemonCard from "@/components/PokemonCard";
 import RetryPanel from "@/components/RetryPanel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getPokemonsFn } from "@/server/pokemon/pokemon.functions";
+import { pokemonsQueryOptions } from "@/queries/pokemon.queries";
 
 const POKEMON_GRID =
 	"mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
@@ -24,9 +29,15 @@ export const Route = createFileRoute("/")({
 		</div>
 	),
 	pendingMs: 300,
-	loader: () => getPokemonsFn(),
+	loader: ({ context }) =>
+		context.queryClient.ensureQueryData(pokemonsQueryOptions()),
 	errorComponent: ({ error }) => {
 		const router = useRouter();
+		const queryErrorResetBoundary = useQueryErrorResetBoundary();
+
+		useEffect(() => {
+			queryErrorResetBoundary.reset();
+		}, [queryErrorResetBoundary]);
 
 		return (
 			<RetryPanel
@@ -49,7 +60,7 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-	const data = Route.useLoaderData();
+	const { data } = useSuspenseQuery(pokemonsQueryOptions());
 
 	return (
 		<div className="flex flex-col gap-4">

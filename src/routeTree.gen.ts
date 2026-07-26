@@ -15,7 +15,7 @@ import { Route as FavoriteRouteImport } from './routes/favorite'
 import { Route as HelloRouteImport } from './routes/hello'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardPokemonsRouteImport } from './routes/dashboard/pokemons'
-import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardTodosRouteImport } from './routes/dashboard/todos'
 import { Route as PokemonsPokemonIdRouteImport } from './routes/pokemons/$pokemonId'
 import { Route as PokemonsNewRouteImport } from './routes/pokemons/new'
 
@@ -49,9 +49,9 @@ const DashboardPokemonsRoute = DashboardPokemonsRouteImport.update({
   path: '/pokemons',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const DashboardTodosRoute = DashboardTodosRouteImport.update({
+  id: '/todos',
+  path: '/todos',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const PokemonsPokemonIdRoute = PokemonsPokemonIdRouteImport.update({
@@ -71,7 +71,7 @@ export interface FileRoutesByFullPath {
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/todos': typeof DashboardTodosRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -81,7 +81,7 @@ export interface FileRoutesByTo {
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/todos': typeof DashboardTodosRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -93,7 +93,7 @@ export interface FileRoutesById {
   '/favorite': typeof FavoriteRoute
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/todos': typeof DashboardTodosRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -106,7 +106,7 @@ export interface FileRouteTypes {
     | '/favorite'
     | '/hello'
     | '/dashboard/pokemons'
-    | '/dashboard/settings'
+    | '/dashboard/todos'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard/'
@@ -116,7 +116,7 @@ export interface FileRouteTypes {
     | '/favorite'
     | '/hello'
     | '/dashboard/pokemons'
-    | '/dashboard/settings'
+    | '/dashboard/todos'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard'
@@ -127,7 +127,7 @@ export interface FileRouteTypes {
     | '/favorite'
     | '/hello'
     | '/dashboard/pokemons'
-    | '/dashboard/settings'
+    | '/dashboard/todos'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard/'
@@ -186,11 +186,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPokemonsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteImport
+    '/dashboard/todos': {
+      id: '/dashboard/todos'
+      path: '/todos'
+      fullPath: '/dashboard/todos'
+      preLoaderRoute: typeof DashboardTodosRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/pokemons/$pokemonId': {
@@ -212,13 +212,13 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteRouteChildren {
   DashboardPokemonsRoute: typeof DashboardPokemonsRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardTodosRoute: typeof DashboardTodosRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardPokemonsRoute: DashboardPokemonsRoute,
-  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardTodosRoute: DashboardTodosRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 

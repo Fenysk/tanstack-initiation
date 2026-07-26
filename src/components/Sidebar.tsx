@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
 	{ to: "/dashboard", label: "Dashboard", exact: true },
-	{ to: "/dashboard/settings", label: "Settings", exact: false },
+	{ to: "/dashboard/todos", label: "Todos", exact: false },
 	{ to: "/dashboard/pokemons", label: "Pokemons", exact: false },
 ] as const;
 

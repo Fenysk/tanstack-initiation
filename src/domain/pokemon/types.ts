@@ -1,1 +1,6 @@
-export type { Pokemon, PokemonList } from "./schemas";
+export type {
+	Pokemon,
+	PokemonId,
+	PokemonList,
+	SavePokemonName,
+} from "./schemas";

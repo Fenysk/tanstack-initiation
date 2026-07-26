@@ -3,7 +3,12 @@ import {
 	PokeApiDetailResponseSchema,
 	PokeApiListResponseSchema,
 } from "@/domain/pokemon/schemas";
-import type { Pokemon, PokemonList } from "@/domain/pokemon/types";
+import type {
+	Pokemon,
+	PokemonId,
+	PokemonList,
+	SavePokemonName,
+} from "@/domain/pokemon/types";
 
 const POKEAPI_BASE = "https://pokeapi.co/api/v2/pokemon";
 const SPRITE_BASE =
@@ -15,23 +20,15 @@ const getSpriteUrlFromPokemonUrl = (url: string): string | null => {
 	return `${SPRITE_BASE}/${id}.png`;
 };
 
-export const fetchPokemons = async (): Promise<PokemonList> => {
-	console.log("Executing a secure database/API call on the server...");
-
+export const fetchAllPokemons = async (): Promise<PokemonList> => {
 	const response = await fetch(`${POKEAPI_BASE}?limit=9`);
 	if (!response.ok)
 		throw new Error(`Failed to fetch pokemons (${response.status})`);
 
 	const data: unknown = await response.json();
 
-	console.log("Data successfully fetched on the server !");
-
 	const parsed = PokeApiListResponseSchema.safeParse(data);
-	if (!parsed.success) {
-		throw new Error("Invalid pokemons API response");
-	}
-
-	if (!parsed.data.results.length) throw notFound();
+	if (!parsed.success) throw new Error("Invalid pokemons API response");
 
 	return {
 		results: parsed.data.results.map((pokemon) => ({
@@ -41,7 +38,9 @@ export const fetchPokemons = async (): Promise<PokemonList> => {
 	};
 };
 
-export const fetchPokemon = async (pokemonId: string): Promise<Pokemon> => {
+export const fetchOnePokemon = async (
+	pokemonId: PokemonId,
+): Promise<Pokemon> => {
 	const response = await fetch(`${POKEAPI_BASE}/${pokemonId}`);
 
 	if (response.status === 404) throw notFound();
@@ -51,7 +50,7 @@ export const fetchPokemon = async (pokemonId: string): Promise<Pokemon> => {
 	const data: unknown = await response.json();
 
 	const parsed = PokeApiDetailResponseSchema.safeParse(data);
-	if (!parsed.success) throw notFound();
+	if (!parsed.success) throw new Error("Invalid pokemon API response");
 
 	return {
 		name: parsed.data.name,
@@ -59,9 +58,7 @@ export const fetchPokemon = async (pokemonId: string): Promise<Pokemon> => {
 	};
 };
 
-export const savePokemon = async (name: string) => {
-	console.log("Saving data to our secure database/API...");
-
+export const saveOnePokemon = async (name: SavePokemonName) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
 	return { success: true, savedName: name };

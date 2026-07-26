@@ -3,16 +3,20 @@ import {
 	PokemonIdSchema,
 	SavePokemonNameSchema,
 } from "@/domain/pokemon/schemas";
-import { fetchPokemon, fetchPokemons, savePokemon } from "./pokemon.server";
+import {
+	fetchAllPokemons,
+	fetchOnePokemon,
+	saveOnePokemon,
+} from "./pokemon.server";
 
 export const getPokemonsFn = createServerFn({ method: "GET" }).handler(() =>
-	fetchPokemons(),
+	fetchAllPokemons(),
 );
 
 export const getPokemonFn = createServerFn({ method: "GET" })
 	.validator(PokemonIdSchema)
-	.handler(({ data }) => fetchPokemon(data));
+	.handler(({ data }) => fetchOnePokemon(data));
 
 export const savePokemonFn = createServerFn({ method: "POST" })
 	.validator(SavePokemonNameSchema)
-	.handler(({ data }) => savePokemon(data));
+	.handler(({ data }) => saveOnePokemon(data));

@@ -31,3 +31,5 @@ export const PokeApiDetailResponseSchema = z.object({
 
 export type Pokemon = z.infer<typeof PokemonSchema>;
 export type PokemonList = z.infer<typeof PokemonListSchema>;
+export type PokemonId = z.infer<typeof PokemonIdSchema>;
+export type SavePokemonName = z.infer<typeof SavePokemonNameSchema>;

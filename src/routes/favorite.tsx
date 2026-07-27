@@ -2,22 +2,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { showSaveErrorToast, showSuccessToast } from "@/lib/toast";
 import { pokemonsQueryOptions } from "@/queries/pokemon.queries";
 import { savePokemonFn } from "@/server/pokemon/pokemon.functions";
 
 export const Route = createFileRoute("/favorite")({
 	component: FavoritePage,
 });
-
-type StatusAlert = {
-	title: string;
-	description?: string;
-	variant?: "destructive";
-};
 
 function FavoritePage() {
 	const [name, setName] = useState<string>("");
@@ -26,12 +20,14 @@ function FavoritePage() {
 
 	const savePokemonMutation = useMutation({
 		mutationFn: (nextName: string) => savePokemon({ data: nextName }),
-		onSuccess: () => {
+		onSuccess: (data) => {
 			setName("");
+			showSuccessToast("Succès", `Pokémon ${data.savedName} enregistré.`);
 			return queryClient.invalidateQueries({
 				queryKey: pokemonsQueryOptions().queryKey,
 			});
 		},
+		onError: showSaveErrorToast,
 	});
 
 	const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -40,28 +36,6 @@ function FavoritePage() {
 		if (!trimmedName) return;
 		savePokemonMutation.mutate(trimmedName);
 	};
-
-	const getStatusAlert = (): StatusAlert | null => {
-		switch (savePokemonMutation.status) {
-			case "pending":
-				return { title: "Saving..." };
-			case "success":
-				return {
-					title: "Success",
-					description: `Successfully saved ${savePokemonMutation.data.savedName}`,
-				};
-			case "error":
-				return {
-					title: "Error",
-					description: "Failed to save. Try again.",
-					variant: "destructive",
-				};
-			default:
-				return null;
-		}
-	};
-
-	const statusAlert = getStatusAlert();
 
 	return (
 		<main className="mx-auto flex max-w-md flex-col gap-4 px-4 pb-8 pt-14">
@@ -85,14 +59,6 @@ function FavoritePage() {
 					</div>
 				</div>
 			</form>
-			{statusAlert && (
-				<Alert variant={statusAlert.variant}>
-					<AlertTitle>{statusAlert.title}</AlertTitle>
-					{statusAlert.description && (
-						<AlertDescription>{statusAlert.description}</AlertDescription>
-					)}
-				</Alert>
-			)}
 		</main>
 	);
 }

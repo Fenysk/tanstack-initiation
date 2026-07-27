@@ -1,6 +1,6 @@
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { showErrorToast } from "@/lib/toast";
 
 type RetryPanelProps = {
 	message: string;
@@ -9,13 +9,15 @@ type RetryPanelProps = {
 };
 
 const RetryPanel = ({ message, errorMessage, onRetry }: RetryPanelProps) => {
+	useEffect(() => {
+		showErrorToast(message, {
+			description: errorMessage,
+			action: { label: "Réessayer", onClick: onRetry },
+		});
+	}, [message, errorMessage, onRetry]);
+
 	return (
-		<div className="flex flex-col items-start gap-4 p-14">
-			<Alert variant="destructive">
-				<AlertCircle />
-				<AlertTitle>{message}</AlertTitle>
-				{errorMessage && <AlertDescription>{errorMessage}</AlertDescription>}
-			</Alert>
+		<div className="flex justify-center p-14">
 			<Button type="button" onClick={onRetry}>
 				Réessayer
 			</Button>

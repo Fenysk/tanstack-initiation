@@ -9,6 +9,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import Header from "@/components/Header.tsx";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
 
 export interface RouterContext {
@@ -55,6 +56,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						<Header />
 						<div className="bg-muted/40 px-8 py-8 md:px-16">{children}</div>
 					</div>
+					<Toaster position="bottom-left" richColors closeButton />
 				</ThemeProvider>
 				<TanStackDevtools
 					config={{

@@ -85,7 +85,6 @@ function TodosPage() {
 								<TodoCard todo={todo} />
 							</li>
 						))}
-
 				</ul>
 			)}
 		</div>

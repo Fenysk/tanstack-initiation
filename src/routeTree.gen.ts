@@ -16,6 +16,7 @@ import { Route as HelloRouteImport } from './routes/hello'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardPokemonsRouteImport } from './routes/dashboard/pokemons'
 import { Route as DashboardTodosRouteImport } from './routes/dashboard/todos'
+import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as PokemonsPokemonIdRouteImport } from './routes/pokemons/$pokemonId'
 import { Route as PokemonsNewRouteImport } from './routes/pokemons/new'
 
@@ -54,6 +55,11 @@ const DashboardTodosRoute = DashboardTodosRouteImport.update({
   path: '/todos',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const LoginSplatRoute = LoginSplatRouteImport.update({
+  id: '/login/$',
+  path: '/login/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PokemonsPokemonIdRoute = PokemonsPokemonIdRouteImport.update({
   id: '/pokemons/$pokemonId',
   path: '/pokemons/$pokemonId',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/todos': typeof DashboardTodosRoute
+  '/login/$': typeof LoginSplatRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/todos': typeof DashboardTodosRoute
+  '/login/$': typeof LoginSplatRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/hello': typeof HelloRoute
   '/dashboard/pokemons': typeof DashboardPokemonsRoute
   '/dashboard/todos': typeof DashboardTodosRoute
+  '/login/$': typeof LoginSplatRoute
   '/pokemons/$pokemonId': typeof PokemonsPokemonIdRoute
   '/pokemons/new': typeof PokemonsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/hello'
     | '/dashboard/pokemons'
     | '/dashboard/todos'
+    | '/login/$'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/hello'
     | '/dashboard/pokemons'
     | '/dashboard/todos'
+    | '/login/$'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/hello'
     | '/dashboard/pokemons'
     | '/dashboard/todos'
+    | '/login/$'
     | '/pokemons/$pokemonId'
     | '/pokemons/new'
     | '/dashboard/'
@@ -138,6 +150,7 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   FavoriteRoute: typeof FavoriteRoute
   HelloRoute: typeof HelloRoute
+  LoginSplatRoute: typeof LoginSplatRoute
   PokemonsPokemonIdRoute: typeof PokemonsPokemonIdRoute
   PokemonsNewRoute: typeof PokemonsNewRoute
 }
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTodosRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/login/$': {
+      id: '/login/$'
+      path: '/login/$'
+      fullPath: '/login/$'
+      preLoaderRoute: typeof LoginSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pokemons/$pokemonId': {
       id: '/pokemons/$pokemonId'
       path: '/pokemons/$pokemonId'
@@ -231,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   FavoriteRoute: FavoriteRoute,
   HelloRoute: HelloRoute,
+  LoginSplatRoute: LoginSplatRoute,
   PokemonsPokemonIdRoute: PokemonsPokemonIdRoute,
   PokemonsNewRoute: PokemonsNewRoute,
 }
@@ -239,10 +260,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

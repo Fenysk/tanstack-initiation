@@ -1,3 +1,4 @@
+import { UserButton } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
@@ -9,7 +10,10 @@ const NAV_LINKS = [
 
 const Sidebar = () => {
 	return (
-		<nav className="p-2">
+		<nav className="flex h-full flex-col p-2">
+			<div className="mb-2 flex justify-start border-b py-4 pl-2">
+				<UserButton />
+			</div>
 			<ul className="flex flex-col gap-1">
 				{NAV_LINKS.map(({ to, label, exact }) => (
 					<li key={to}>

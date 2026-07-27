@@ -1,3 +1,4 @@
+import { Show, SignInButton } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
@@ -12,11 +13,17 @@ const Header = () => {
 					</h1>
 				</Link>
 				<div className="flex items-center gap-4">
-					<p className="text-sm text-muted-foreground">Ceci est un header</p>
+					<Show when="signed-out">
+						<SignInButton mode="redirect" forceRedirectUrl="/dashboard">
+							<Button variant="outline">Connexion</Button>
+						</SignInButton>
+					</Show>
+					<Show when="signed-in">
+						<Button asChild>
+							<Link to="/dashboard">Dashboard</Link>
+						</Button>
+					</Show>
 					<ModeToggle />
-					<Button asChild>
-						<Link to="/dashboard">Dashboard</Link>
-					</Button>
 				</div>
 			</div>
 		</header>

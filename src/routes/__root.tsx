@@ -1,3 +1,5 @@
+import { ClerkProvider } from "@clerk/tanstack-react-start";
+import { shadcn } from "@clerk/ui/themes";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
@@ -51,13 +53,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
-				<ThemeProvider defaultTheme="light">
-					<div className="grid min-h-dvh grid-rows-[auto_1fr]">
-						<Header />
-						<div className="bg-muted/40 px-8 py-8 md:px-16">{children}</div>
-					</div>
-					<Toaster position="bottom-left" richColors closeButton />
-				</ThemeProvider>
+				<ClerkProvider
+					appearance={{ theme: shadcn }}
+					signInUrl="/login"
+					signUpUrl="/login/sign-up"
+				>
+					<ThemeProvider defaultTheme="light">
+						<div className="grid min-h-dvh grid-rows-[auto_1fr]">
+							<Header />
+							<div className="bg-muted/40 px-8 py-8 md:px-16">{children}</div>
+						</div>
+						<Toaster position="bottom-left" richColors closeButton />
+					</ThemeProvider>
+				</ClerkProvider>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

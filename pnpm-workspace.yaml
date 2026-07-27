@@ -1,0 +1,12 @@
+# pnpm 11+ project settings (replaces the deprecated "pnpm" field in package.json).
+# Each entry is an explicit, auditable decision for dependency lifecycle scripts.
+allowBuilds:
+  # Required — Vite bundler native binary
+  esbuild: true
+  # Required — Tailwind CSS v4 native bindings
+  lightningcss: true
+  # Optional peers of @clerk/ui (WebSocket perf) — not needed for a web SSR app
+  bufferutil: false
+  utf-8-validate: false
+  # Polyfill postinstall — not required with modern targets + Vite
+  core-js: false

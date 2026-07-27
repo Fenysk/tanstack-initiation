@@ -8,11 +8,17 @@ import type {
 	PokemonId,
 	PokemonList,
 	SavePokemonName,
+	UpdatePokemon,
 } from "@/domain/pokemon/types";
 
 const POKEAPI_BASE = "https://pokeapi.co/api/v2/pokemon";
 const SPRITE_BASE =
 	"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
+
+const likedPokemons: PokemonId[] = [];
+
+const isPokemonLiked = (pokemonId: PokemonId): boolean =>
+	likedPokemons.includes(pokemonId);
 
 const getSpriteUrlFromPokemonUrl = (url: string): string | null => {
 	const id = url.split("/").filter(Boolean).pop();
@@ -34,6 +40,7 @@ export const fetchAllPokemons = async (): Promise<PokemonList> => {
 		results: parsed.data.results.map((pokemon) => ({
 			name: pokemon.name,
 			imageUrl: getSpriteUrlFromPokemonUrl(pokemon.url),
+			liked: isPokemonLiked(pokemon.name),
 		})),
 	};
 };
@@ -55,6 +62,7 @@ export const fetchOnePokemon = async (
 	return {
 		name: parsed.data.name,
 		imageUrl: parsed.data.sprites.front_default ?? null,
+		liked: isPokemonLiked(parsed.data.name),
 	};
 };
 
@@ -62,4 +70,20 @@ export const saveOnePokemon = async (name: SavePokemonName) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
 	return { success: true, savedName: name };
+};
+
+export const updateOnePokemon = async ({
+	pokemonId,
+	liked,
+}: UpdatePokemon): Promise<Pokemon> => {
+	if (liked) {
+		if (!likedPokemons.includes(pokemonId)) {
+			likedPokemons.push(pokemonId);
+		}
+	} else {
+		const index = likedPokemons.indexOf(pokemonId);
+		if (index !== -1) likedPokemons.splice(index, 1);
+	}
+
+	return fetchOnePokemon(pokemonId);
 };

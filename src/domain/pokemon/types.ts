@@ -3,4 +3,5 @@ export type {
 	PokemonId,
 	PokemonList,
 	SavePokemonName,
+	UpdatePokemon,
 } from "./schemas";

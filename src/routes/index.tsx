@@ -79,7 +79,7 @@ function App() {
 			<ul className={POKEMON_GRID}>
 				{data.results.map((pokemon) => (
 					<li key={pokemon.name}>
-						<PokemonCard {...pokemon} />
+						<PokemonCard pokemon={pokemon} />
 					</li>
 				))}
 			</ul>

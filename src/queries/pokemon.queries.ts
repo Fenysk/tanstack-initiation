@@ -1,8 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import {
-	getPokemonFn,
-	getPokemonsFn,
-} from "@/server/pokemon/pokemon.functions";
+import { getPokemonFn, getPokemonsFn } from "@/server/pokemon/pokemon.functions";
 
 export const pokemonsQueryOptions = () =>
 	queryOptions({

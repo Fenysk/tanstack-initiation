@@ -14,12 +14,16 @@ pnpm install && pnpm dev
 - `Link` & navigation typée
 - Params (`useParams`)
 - Loaders & `useLoaderData`
-- Server functions (`createServerFn`, `useServerFn`, validators)
+- Domain layer (Zod schemas + type façades)
+- Server layer (`*.server.ts` + `*.functions.ts` / `createServerFn`)
+- TanStack Query (`queryOptions`, `ensureQueryData`, `useSuspenseQuery`)
+- SSR Query (`setupRouterSsrQueryIntegration`, `QueryClient` par requête)
+- Mutations + invalidation de cache
 - API routes (`server.handlers`)
 - Preload & scroll restoration
 - États de route (`pending`, `error`, `notFound`)
 - `notFound()` & `router.invalidate()`
 - Head / meta (SEO, OG, Twitter)
-- Devtools Router
+- Devtools Router / Query
 - React Compiler, Biome, Tailwind
 - Composants UI (Header, Sidebar, cards)

@@ -7,7 +7,6 @@ import {
 import {
 	deleteOneTodo,
 	fetchAllTodos,
-	fetchOneTodo,
 	saveOneTodo,
 	updateOneTodo,
 } from "./todo.server";
@@ -15,10 +14,6 @@ import {
 export const getTodosFn = createServerFn({ method: "GET" }).handler(() =>
 	fetchAllTodos(),
 );
-
-export const getTodoFn = createServerFn({ method: "GET" })
-	.validator(TodoIdSchema)
-	.handler(({ data }) => fetchOneTodo(data));
 
 export const saveTodoFn = createServerFn({ method: "POST" })
 	.validator(SaveTodoContentSchema)

@@ -4,11 +4,13 @@ FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+RUN corepack enable && corepack prepare pnpm@11.17.0 --activate
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm i --frozen-lockfile
 
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 FROM node:22-bookworm-slim AS runner
 
@@ -20,10 +22,6 @@ ENV NODE_ENV=production \
 
 RUN groupadd --system app \
 	&& useradd --system --gid app --create-home --home-dir /app app
-
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev \
-	&& chown -R app:app /app
 
 COPY --from=builder --chown=app:app /app/.output ./.output
 

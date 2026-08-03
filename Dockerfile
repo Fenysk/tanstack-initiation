@@ -23,10 +23,10 @@ ENV NODE_ENV=production \
 RUN groupadd --system app \
 	&& useradd --system --gid app --create-home --home-dir /app app
 
-COPY --from=builder --chown=app:app /app/.output ./.output
+COPY --from=builder --chown=app:app /app/dist ./dist
 
 USER app
 
 EXPOSE 3000
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["node", "dist/server/server.js"]
